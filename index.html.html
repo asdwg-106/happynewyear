@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chúc Mừng Năm Mới 2026 - Hoành Tráng</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            /* Nền Gradient sáng và sang trọng hơn */
+            background: radial-gradient(circle, #1a1a2e, #16213e, #0f0f1a);
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+        }
+
+        #canvas {
+            position: fixed;
+            top: 0; left: 0;
+            z-index: 1;
+        }
+
+        /* Màn hình chờ */
+        #overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            cursor: pointer;
+        }
+
+        #overlay h2 {
+            color: #fff;
+            border: 3px solid #f1c40f;
+            padding: 20px 40px;
+            border-radius: 50px;
+            box-shadow: 0 0 20px #f1c40f;
+            text-align: center;
+        }
+
+        /* Container chữ chính - Hiệu ứng trượt từ dưới lên */
+        .container {
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 10;
+            width: 90%;
+            display: none;
+            /* Animation trượt từ dưới lên */
+            animation: slideUp 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        @keyframes slideUp {
+            0% { top: 150%; opacity: 0; }
+            100% { top: 50%; opacity: 1; }
+        }
+
+        h1 {
+            font-size: 5.5vw;
+            background: linear-gradient(to right, #fff, #f1c40f, #ffcc00, #fff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(241, 196, 15, 0.5);
+            margin-bottom: 20px;
+            animation: shine 3s linear infinite;
+        }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+
+        .wish-text {
+            color: #fff;
+            font-size: 1.8vw;
+            line-height: 1.6;
+            text-shadow: 1px 1px 10px rgba(0,0,0,0.8);
+            font-style: italic;
+        }
+
+        /* Chữ Happy New Year bay xung quanh */
+        .floating-text {
+            position: fixed;
+            color: rgba(255, 255, 255, 0.2);
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 2;
+            white-space: nowrap;
+            user-select: none;
+        }
+
+        /* Lì xì rơi */
+        .red-envelope {
+            position: fixed;
+            font-size: 30px;
+            z-index: 5;
+            top: -10%;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall { to { top: 110%; } }
+
+    </style>
+</head>
+<body>
+
+    <canvas id="canvas"></canvas>
+
+    <div id="overlay" onclick="startNewYear()">
+        <h2>🧨 KHAI HỎA ĐÓN XUÂN 2026 🧧<br><small style="font-size: 14px;">(Click để bắt đầu)</small></h2>
+    </div>
+
+    <div class="container" id="mainContent">
+        <h1>CHÚC MỪNG NĂM MỚI 2026</h1>
+        <p class="wish-text">
+            "Chúc mọi người năm mới vạn sự như ý, triệu sự như mơ,<br>
+            trăm sự bất ngờ, hàng giờ hạnh phúc và bình an<br>
+            đi qua xuân thu bốn mùa, có thể ngắm ngàn vạn phong cảnh rực rỡ"
+        </p>
+    </div>
+
+    <audio id="bgMusic" loop>
+        <source src="VIRAL CLIP - MỘT NĂM MỚI BÌNH AN _ SƠN TÙNG M-TP - (128 Kbps).mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let fireworks = [];
+        let particles = [];
+
+        function startNewYear() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+            document.getElementById('bgMusic').play();
+
+            // Kích hoạt các hiệu ứng
+            setInterval(createRedEnvelope, 1000);
+            setInterval(createFloatingText, 1500); // Tạo chữ Happy New Year bay
+            loop();
+        }
+
+        // Tạo chữ "Happy New Year" bay ngẫu nhiên
+        function createFloatingText() {
+            const txt = document.createElement('div');
+            txt.className = 'floating-text';
+            txt.innerText = 'Happy New Year 2026';
+            
+            const size = Math.random() * 20 + 15;
+            const duration = Math.random() * 10 + 10;
+            
+            txt.style.fontSize = size + 'px';
+            txt.style.left = '-200px';
+            txt.style.top = Math.random() * 100 + 'vh';
+            txt.style.opacity = Math.random() * 0.5 + 0.1;
+            
+            document.body.appendChild(txt);
+
+            // Hiệu ứng bay ngang màn hình
+            txt.animate([
+                { left: '-200px', transform: 'rotate(0deg)' },
+                { left: '110vw', transform: 'rotate(20deg)' }
+            ], {
+                duration: duration * 1000,
+                easing: 'linear'
+            }).onfinish = () => txt.remove();
+        }
+
+        function createRedEnvelope() {
+            const env = document.createElement('div');
+            env.innerHTML = '🧧';
+            env.className = 'red-envelope';
+            env.style.left = Math.random() * 100 + 'vw';
+            env.style.animationDuration = (Math.random() * 4 + 4) + 's';
+            document.body.appendChild(env);
+            setTimeout(() => env.remove(), 6000);
+        }
+
+        // Logic Pháo hoa mượt mà hơn
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        function loop() {
+            requestAnimationFrame(loop);
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.globalCompositeOperation = 'lighter';
+
+            if (Math.random() < 0.05) {
+                fireworks.push(new Firework());
+            }
+
+            fireworks.forEach((fw, i) => {
+                fw.update();
+                fw.draw();
+                if (fw.done) fireworks.splice(i, 1);
+            });
+
+            particles.forEach((p, i) => {
+                p.update();
+                p.draw();
+                if (p.alpha <= 0) particles.splice(i, 1);
+            });
+        }
+
+        class Firework {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height;
+                this.ty = Math.random() * (canvas.height / 2);
+                this.speed = 4 + Math.random() * 3;
+                this.color = `hsl(${Math.random() * 360}, 100%, 60%)`;
+                this.done = false;
+            }
+            update() {
+                this.y -= this.speed;
+                if (this.y <= this.ty) {
+                    for (let i = 0; i < 60; i++) particles.push(new Particle(this.x, this.y, this.color));
+                    this.done = true;
+                }
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+        }
+
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x; this.y = y;
+                this.color = color;
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 6 + 1;
+                this.vx = Math.cos(angle) * speed;
+                this.vy = Math.sin(angle) * speed;
+                this.alpha = 1;
+            }
+            update() {
+                this.vx *= 0.98; this.vy *= 0.98;
+                this.vy += 0.05; // gravity
+                this.x += this.vx; this.y += this.vy;
+                this.alpha -= 0.015;
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 1.5, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+    </script>
+</body>
+</html>
